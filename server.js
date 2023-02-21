@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const { request } = require('express');
+const cookieParser = require('cookie-parser');
 
 //load env vars
 dotenv.config({path: './config/config.env'});
@@ -14,9 +15,16 @@ const app = express();
 //add body parser
 app.use(express.json());
 
+//Cookie parser
+app.use(cookieParser());
+
 //for hospitals
 const hospitals = require('./routes/hospitals');
 app.use('/api/v1/hospitals',hospitals);
+
+//for auth
+const auth = require('./routes/auth');
+app.use('/api/v1/auth',auth);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log('Server running in', process.env.NODE_ENV, 'mode on port', PORT));
